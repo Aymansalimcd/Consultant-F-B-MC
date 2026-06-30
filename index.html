@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>F&B Consulting — Conseil en Hôtellerie & Restauration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       JETONS DE DESIGN — modifiez ces valeurs pour changer le thème
+       ============================================================ */
+    :root {
+      --color-dark:       #1A1A18;
+      --color-ivory:      #F7F3EC;
+      --color-gold:       #C9A84C;
+      --color-gold-light: #E8D49A;
+      --color-clay:       #8B5E3C;
+      --color-sage:       #8A9E8A;
+      --color-mid:        #4A4A47;
+      --color-border:     #DDD8CE;
+
+      --font-display: 'Cormorant Garant', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+
+      --sp-xs:  0.5rem;
+      --sp-sm:  1rem;
+      --sp-md:  2rem;
+      --sp-lg:  4rem;
+      --sp-xl:  7rem;
+
+      --text-xs:   0.75rem;
+      --text-sm:   0.875rem;
+      --text-base: 1rem;
+      --text-lg:   1.125rem;
+      --text-xl:   1.375rem;
+      --text-2xl:  1.875rem;
+      --text-3xl:  2.75rem;
+      --text-4xl:  4rem;
+      --text-hero: clamp(3rem, 7vw, 6.5rem);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--color-ivory); color: var(--color-dark); line-height: 1.6; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-md); }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+    }
+
+    .divider-ornament { display: flex; align-items: center; gap: var(--sp-md); margin: var(--sp-md) 0; }
+    .divider-ornament::before, .divider-ornament::after { content: ''; flex: 1; height: 1px; background: var(--color-border); }
+    .divider-ornament span { color: var(--color-gold); font-size: 1.2rem; }
+
+    .btn-primary {
+      display: inline-block; background: var(--color-gold); color: var(--color-dark);
+      font-family: var(--font-body); font-size: var(--text-sm); font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.9rem 2.25rem;
+      border: none; cursor: pointer; transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--color-clay); color: var(--color-ivory); transform: translateY(-1px); }
+
+    .btn-outline {
+      display: inline-block; background: transparent; color: var(--color-ivory);
+      font-family: var(--font-body); font-size: var(--text-sm); font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 2.25rem;
+      border: 1px solid rgba(255,255,255,0.45); cursor: pointer;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--color-gold-light); }
+
+    /* ── NAVIGATION ────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem var(--sp-md);
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .nav.scrolled { background: rgba(26,26,24,0.96); backdrop-filter: blur(10px); box-shadow: 0 1px 0 rgba(201,168,76,0.2); }
+
+    .nav-logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--color-ivory); letter-spacing: 0.05em; }
+    .nav-logo span { color: var(--color-gold); }
+
+    .nav-links { display: flex; gap: var(--sp-lg); list-style: none; }
+    .nav-links a { font-size: var(--text-sm); font-weight: 400; color: rgba(247,243,236,0.75); letter-spacing: 0.06em; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--color-gold); }
+
+    .nav-cta { font-size: var(--text-sm); font-weight: 500; color: var(--color-gold); letter-spacing: 0.08em; border: 1px solid var(--color-gold); padding: 0.5rem 1.25rem; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--color-gold); color: var(--color-dark); }
+
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--color-ivory); transition: transform 0.3s; }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; background: var(--color-dark); position: relative;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding-bottom: var(--sp-xl); overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 75% 40%, rgba(201,168,76,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 10% 80%, rgba(139,94,60,0.12) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero::before {
+      content: ''; position: absolute;
+      left: calc(var(--sp-md) * 2.5); top: 15%; bottom: 15%; width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent);
+      opacity: 0.4;
+    }
+    .hero-inner { position: relative; z-index: 2; padding: 0 var(--sp-md) 0 calc(var(--sp-md) * 2.5 + 2rem); }
+    .hero-eyebrow { font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-gold); margin-bottom: var(--sp-md); }
+    .hero-headline { font-family: var(--font-display); font-size: var(--text-hero); font-weight: 300; color: var(--color-ivory); line-height: 1.05; max-width: 900px; margin-bottom: var(--sp-md); }
+    .hero-headline em { font-style: italic; color: var(--color-gold-light); }
+    .hero-sub { font-size: var(--text-lg); color: rgba(247,243,236,0.65); max-width: 560px; line-height: 1.7; margin-bottom: var(--sp-md); }
+    .hero-devise {
+      display: inline-block;
+      font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--color-gold); border-top: 1px solid rgba(201,168,76,0.3); padding-top: 0.75rem;
+      margin-bottom: var(--sp-lg);
+    }
+    .hero-actions { display: flex; gap: var(--sp-md); flex-wrap: wrap; align-items: center; }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; right: var(--sp-md);
+      display: flex; flex-direction: column; align-items: center; gap: var(--sp-xs);
+      color: rgba(247,243,236,0.4); font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .hero-scroll::after {
+      content: ''; display: block; width: 1px; height: 50px;
+      background: linear-gradient(to bottom, rgba(201,168,76,0.6), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:.4;transform:scaleY(.7)} }
+
+    .hero-stats { position: absolute; right: var(--sp-md); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: var(--sp-lg); z-index: 2; }
+    .hero-stat-item { text-align: right; }
+    .hero-stat-num { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 300; color: var(--color-ivory); line-height: 1; }
+    .hero-stat-num span { color: var(--color-gold); }
+    .hero-stat-label { font-size: var(--text-xs); letter-spacing: 0.1em; color: rgba(247,243,236,0.45); text-transform: uppercase; }
+
+    /* ── TICKER ───────────────────────────────────────────────── */
+    .ticker { background: var(--color-dark); border-top: 1px solid rgba(201,168,76,0.2); border-bottom: 1px solid rgba(201,168,76,0.2); padding: 1.25rem 0; overflow: hidden; }
+    .ticker-track { display: flex; gap: 4rem; animation: ticker 30s linear infinite; white-space: nowrap; width: max-content; }
+    .ticker-track:hover { animation-play-state: paused; }
+    .ticker-item { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; color: rgba(247,243,236,0.28); letter-spacing: 0.08em; flex-shrink: 0; transition: color 0.3s; }
+    .ticker-item:hover { color: var(--color-gold); }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── À PROPOS / CONSULTANT ───────────────────────────────── */
+    .about { padding: var(--sp-xl) 0; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xl); align-items: center; }
+    .about-left .section-label { margin-bottom: var(--sp-md); }
+    .about-headline { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 400; line-height: 1.2; margin-bottom: var(--sp-md); }
+    .about-headline em { font-style: italic; color: var(--color-clay); }
+    .about-body { color: var(--color-mid); line-height: 1.8; margin-bottom: var(--sp-md); }
+
+    .competences-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-sm); margin-top: var(--sp-md); }
+    .competence-item {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      font-size: var(--text-sm); color: var(--color-mid);
+    }
+    .competence-item::before { content: '◆'; color: var(--color-gold); font-size: 0.5rem; margin-top: 0.45rem; flex-shrink: 0; }
+
+    .about-signature { font-family: var(--font-display); font-size: var(--text-2xl); font-style: italic; color: var(--color-clay); margin-top: var(--sp-md); }
+    .about-signature small { display: block; font-family: var(--font-body); font-style: normal; font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-mid); margin-top: 0.25rem; }
+
+    /* Portrait du consultant */
+    .about-portrait {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .portrait-card {
+      background: var(--color-dark);
+      padding: var(--sp-lg);
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+    }
+    .portrait-card::before {
+      content: '';
+      position: absolute; top: -1px; left: var(--sp-md); right: var(--sp-md); height: 2px;
+      background: var(--color-gold);
+    }
+    .portrait-avatar {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(201,168,76,0.12);
+      border: 2px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 3rem; color: var(--color-gold);
+      margin: 0 auto var(--sp-md);
+    }
+    .portrait-name { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; color: var(--color-ivory); text-align: center; margin-bottom: 0.25rem; }
+    .portrait-title { font-size: var(--text-sm); color: var(--color-gold); letter-spacing: 0.08em; text-align: center; margin-bottom: var(--sp-md); }
+    .portrait-badge {
+      background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2);
+      padding: var(--sp-sm) var(--sp-md);
+      font-size: var(--text-sm); color: rgba(247,243,236,0.7);
+      line-height: 1.65; text-align: center;
+    }
+    .portrait-badge strong { color: var(--color-gold-light); }
+    .portrait-stat-row { display: flex; gap: 1px; margin-top: var(--sp-md); background: rgba(201,168,76,0.15); }
+    .portrait-stat { flex: 1; background: var(--color-dark); padding: var(--sp-sm); text-align: center; }
+    .portrait-stat-num { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 300; color: var(--color-ivory); line-height: 1; }
+    .portrait-stat-num span { color: var(--color-gold); }
+    .portrait-stat-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,243,236,0.4); margin-top: 0.25rem; }
+
+    /* ── SERVICES ─────────────────────────────────────────────── */
+    .services { background: var(--color-dark); padding: var(--sp-xl) 0; }
+    .services-header { text-align: center; margin-bottom: var(--sp-lg); }
+    .services-header .section-label { margin-bottom: var(--sp-sm); }
+    .services-headline { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 300; color: var(--color-ivory); max-width: 600px; margin: 0 auto; line-height: 1.25; }
+    .services-headline em { font-style: italic; color: var(--color-gold-light); }
+
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.15); margin-top: var(--sp-lg); }
+    .service-card { background: var(--color-dark); padding: var(--sp-lg) var(--sp-md); position: relative; cursor: default; transition: background 0.3s; overflow: hidden; }
+    .service-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--color-gold); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
+    .service-card:hover { background: rgba(201,168,76,0.04); }
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .service-icon { font-size: 1.8rem; margin-bottom: var(--sp-md); display: block; }
+    .service-num { font-family: var(--font-display); font-size: 4rem; font-weight: 300; color: rgba(201,168,76,0.1); position: absolute; top: var(--sp-md); right: var(--sp-md); line-height: 1; }
+    .service-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; color: var(--color-ivory); margin-bottom: var(--sp-sm); line-height: 1.2; }
+    .service-list { list-style: none; margin-bottom: var(--sp-md); }
+    .service-list li { font-size: var(--text-sm); color: rgba(247,243,236,0.55); line-height: 1.8; padding-left: 1rem; position: relative; }
+    .service-list li::before { content: '—'; position: absolute; left: 0; color: var(--color-gold); opacity: 0.6; }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-gold); border: 1px solid rgba(201,168,76,0.3); padding: 0.2rem 0.6rem; }
+
+    /* ── MÉTHODE ─────────────────────────────────────────────── */
+    .process { padding: var(--sp-xl) 0; }
+    .process-header { max-width: 520px; margin-bottom: var(--sp-lg); }
+    .process-header .section-label { margin-bottom: var(--sp-sm); }
+    .process-headline { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 400; line-height: 1.2; }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+    .process-steps::before { content: ''; position: absolute; top: 2.5rem; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, var(--color-border), var(--color-gold), var(--color-border)); }
+    .process-step { padding: 0 var(--sp-md) var(--sp-md); position: relative; }
+    .step-dot { width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--color-ivory); border: 2px solid var(--color-gold); position: relative; z-index: 1; margin-bottom: var(--sp-md); transition: background 0.3s; }
+    .process-step:hover .step-dot { background: var(--color-gold); }
+    .step-phase { font-size: var(--text-xs); letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-gold); margin-bottom: var(--sp-xs); }
+    .step-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; margin-bottom: var(--sp-xs); }
+    .step-desc { font-size: var(--text-sm); color: var(--color-mid); line-height: 1.7; }
+
+    /* ── RÉSULTATS ──────────────────────────────────────────── */
+    .results { background: var(--color-clay); padding: var(--sp-xl) 0; position: relative; overflow: hidden; }
+    .results::before { content: '\00AB'; font-family: var(--font-display); font-size: 30rem; font-weight: 700; color: rgba(0,0,0,0.08); position: absolute; top: -5rem; left: -2rem; line-height: 1; pointer-events: none; }
+    .results-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xl); align-items: center; }
+    .results-quote { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 300; font-style: italic; color: var(--color-ivory); line-height: 1.45; }
+    .results-quote cite { display: block; font-style: normal; font-family: var(--font-body); font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: rgba(247,243,236,0.6); margin-top: var(--sp-md); }
+    .results-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); }
+    .result-item { border-left: 2px solid rgba(247,243,236,0.3); padding-left: var(--sp-md); }
+    .result-num { font-family: var(--font-display); font-size: var(--text-4xl); font-weight: 300; color: var(--color-ivory); line-height: 1; }
+    .result-label { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,243,236,0.7); margin-top: 0.4rem; }
+
+    /* ── RÉALISATIONS ───────────────────────────────────────── */
+    .cases { padding: var(--sp-xl) 0; background: var(--color-ivory); }
+    .cases-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--sp-lg); }
+    .cases-headline { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 400; max-width: 400px; line-height: 1.2; }
+    .cases-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-md); }
+    .case-card { background: white; border: 1px solid var(--color-border); overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+    .case-card:hover { box-shadow: 0 12px 40px rgba(28,28,26,0.1); transform: translateY(-4px); }
+    .case-img { height: 180px; overflow: hidden; }
+    .case-body { padding: var(--sp-md); }
+    .case-cat { font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-gold); margin-bottom: var(--sp-xs); }
+    .case-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; margin-bottom: var(--sp-xs); line-height: 1.3; }
+    .case-desc { font-size: var(--text-sm); color: var(--color-mid); line-height: 1.7; margin-bottom: var(--sp-md); }
+    .case-result { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; color: var(--color-clay); }
+    .case-result small { display: block; font-family: var(--font-body); font-size: var(--text-xs); font-weight: 400; color: var(--color-mid); }
+
+    /* ── CONTACT ─────────────────────────────────────────────── */
+    .contact { padding: var(--sp-xl) 0; }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xl); align-items: start; }
+    .contact-left .section-label { margin-bottom: var(--sp-sm); }
+    .contact-headline { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 400; line-height: 1.2; margin-bottom: var(--sp-md); }
+    .contact-body { color: var(--color-mid); line-height: 1.8; margin-bottom: var(--sp-lg); }
+    .contact-details { display: flex; flex-direction: column; gap: var(--sp-md); }
+    .contact-item { display: flex; gap: var(--sp-sm); align-items: flex-start; }
+    .contact-icon { font-size: 1.1rem; margin-top: 0.1rem; flex-shrink: 0; color: var(--color-gold); }
+    .contact-info-label { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-mid); }
+    .contact-info-val { font-size: var(--text-base); color: var(--color-dark); margin-top: 0.2rem; }
+    .contact-info-val a { color: var(--color-clay); transition: color 0.2s; }
+    .contact-info-val a:hover { color: var(--color-gold); }
+
+    .contact-form { background: white; border: 1px solid var(--color-border); padding: var(--sp-lg); }
+    .form-heading { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; margin-bottom: var(--sp-md); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-sm); }
+    .form-group { margin-bottom: var(--sp-sm); }
+    .form-group label { display: block; font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-mid); margin-bottom: 0.4rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-border);
+      background: var(--color-ivory); font-family: var(--font-body); font-size: var(--text-sm);
+      color: var(--color-dark); outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--color-gold); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    .footer { background: var(--color-dark); padding: var(--sp-xl) 0 var(--sp-md); }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--sp-lg); padding-bottom: var(--sp-lg); border-bottom: 1px solid rgba(201,168,76,0.15); }
+    .footer-brand .nav-logo { display: block; margin-bottom: var(--sp-sm); font-size: 1.6rem; }
+    .footer-tagline { font-size: var(--text-sm); color: rgba(247,243,236,0.45); line-height: 1.7; max-width: 280px; }
+    .footer-social { display: flex; gap: var(--sp-sm); margin-top: var(--sp-md); }
+    .social-link { width: 36px; height: 36px; border: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; color: rgba(247,243,236,0.5); font-size: 0.85rem; transition: background 0.2s, color 0.2s; }
+    .social-link:hover { background: var(--color-gold); color: var(--color-dark); border-color: var(--color-gold); }
+    .footer-col-title { font-size: var(--text-xs); letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-gold); margin-bottom: var(--sp-md); }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a { font-size: var(--text-sm); color: rgba(247,243,236,0.5); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--color-ivory); }
+    .footer-bottom { padding-top: var(--sp-md); display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-size: var(--text-xs); color: rgba(247,243,236,0.3); }
+    .footer-legal { display: flex; gap: var(--sp-md); }
+    .footer-legal a { font-size: var(--text-xs); color: rgba(247,243,236,0.3); transition: color 0.2s; }
+    .footer-legal a:hover { color: var(--color-gold); }
+
+    /* ── MENU MOBILE ─────────────────────────────────────────── */
+    .mobile-menu { display: none; position: fixed; inset: 0; background: var(--color-dark); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-md); }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 300; color: var(--color-ivory); transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--color-gold); }
+    .mobile-close { position: absolute; top: 1.5rem; right: var(--sp-md); background: none; border: none; color: var(--color-ivory); font-size: 1.5rem; cursor: pointer; }
+
+    /* ── ANIMATION ───────────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .hero-stats { display: none; }
+    }
+    @media (max-width: 768px) {
+      :root { --sp-xl: 4rem; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: flex; }
+      .about-grid { grid-template-columns: 1fr; }
+      .results-inner { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-steps::before { display: none; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; }
+      .hero-inner { padding-left: var(--sp-md); }
+      .hero::before { display: none; }
+      .cases-header { flex-direction: column; align-items: flex-start; gap: var(--sp-sm); }
+      .footer-top { grid-template-columns: 1fr; }
+      .competences-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .form-row { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .cases-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVIGATION ─────────────────────────────────────────── -->
+  <nav class="nav" id="mainNav">
+    <a href="#" class="nav-logo">F<span>&amp;B</span> Consulting</a>
+    <ul class="nav-links">
+      <li><a href="#about">À propos</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#realisations">Réalisations</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Nous contacter</a>
+    <div class="nav-toggle" id="navToggle" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Menu mobile -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="toggleMenu()">✕</button>
+    <a href="#about" onclick="toggleMenu()">À propos</a>
+    <a href="#services" onclick="toggleMenu()">Services</a>
+    <a href="#realisations" onclick="toggleMenu()">Réalisations</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+  </div>
+
+  <!-- ─── HERO ────────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">30<span>+</span></div>
+        <div class="hero-stat-label">Années d'expérience</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">EHL</div>
+        <div class="hero-stat-label">École Hôtelière de Lausanne</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">360<span>°</span></div>
+        <div class="hero-stat-label">Accompagnement complet</div>
+      </div>
+    </div>
+
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Conseil en hôtellerie &amp; restauration</p>
+      <h1 class="hero-headline">
+        À chaque établissement<br>
+        une signature F&amp;B<br>
+        <em>mémorable.</em>
+      </h1>
+      <p class="hero-sub">
+        Nous accompagnons les hôtels &amp; restaurants dans la conception des projets, le lancement &amp; l'exploitation des établissements.
+      </p>
+      <p class="hero-devise">
+        Professionnalisme &nbsp;—&nbsp; Rigueur &nbsp;—&nbsp; Innovation
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Prendre contact</a>
+        <a href="#services" class="btn-outline">Découvrir nos services</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">Défiler</div>
+  </section>
+
+  <!-- ─── TICKER ──────────────────────────────────────────────── -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">Hôtellerie</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Restauration</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Menu Engineering</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Audit F&amp;B</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Formation</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Ouverture d'établissements</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Management opérationnel</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">HACCP &amp; Qualité</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Hôtellerie</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Restauration</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Menu Engineering</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Audit F&amp;B</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Formation</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Ouverture d'établissements</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">Management opérationnel</span>
+      <span class="ticker-item">◆</span>
+      <span class="ticker-item">HACCP &amp; Qualité</span>
+      <span class="ticker-item">◆</span>
+    </div>
+  </div>
+
+  <!-- ─── À PROPOS ─────────────────────────────────────────────── -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+
+        <div class="about-left reveal">
+          <p class="section-label">Le consultant</p>
+          <h2 class="about-headline">
+            Trois décennies de terrain,<br>
+            une <em>expertise globale</em>.
+          </h2>
+          <p class="about-body">
+            Ancien diplômé de l'École Hôtelière de Lausanne (Suisse), fort de plusieurs années d'expérience dans le milieu de l'hôtellerie &amp; la restauration, ayant effectué diverses missions d'ouvertures d'établissements de renommée, d'organisation et de management opérationnel auprès d'enseignes prestigieuses.
+          </p>
+          <p class="about-body">
+            Trois décennies de terrain ont permis de maîtriser l'ensemble des activités liées à l'exploitation &amp; au management opérationnel — de la conception du concept jusqu'à l'optimisation des performances en continu.
+          </p>
+
+          <div class="divider-ornament"><span>✦</span></div>
+
+          <div class="competences-grid">
+            <div class="competence-item">Création de concept culinaire</div>
+            <div class="competence-item">Gestion financière &amp; budgets</div>
+            <div class="competence-item">Management des équipes</div>
+            <div class="competence-item">Normes HACCP &amp; qualité</div>
+            <div class="competence-item">Menu engineering &amp; tarification</div>
+            <div class="competence-item">Marketing &amp; communication</div>
+            <div class="competence-item">Ouvertures d'établissements</div>
+            <div class="competence-item">Audit F&amp;B &amp; optimisation</div>
+          </div>
+
+          <p class="about-signature">
+            Mouhssine Cherti
+            <small>Consultant en hôtellerie &amp; restauration — EHL Lausanne</small>
+          </p>
+        </div>
+
+        <div class="about-portrait reveal">
+          <div class="portrait-card">
+            <div class="portrait-avatar">MC</div>
+            <p class="portrait-name">Mouhssine Cherti</p>
+            <p class="portrait-title">Consultant F&amp;B Senior</p>
+            <div class="portrait-badge">
+              Diplômé de l'<strong>École Hôtelière de Lausanne</strong> (EHL, Suisse) — institution de référence mondiale en formation hôtelière et gastronomique.
+            </div>
+            <div class="portrait-stat-row">
+              <div class="portrait-stat">
+                <div class="portrait-stat-num">30<span>+</span></div>
+                <div class="portrait-stat-label">Ans d'exp.</div>
+              </div>
+              <div class="portrait-stat">
+                <div class="portrait-stat-num">6</div>
+                <div class="portrait-stat-label">Domaines</div>
+              </div>
+              <div class="portrait-stat">
+                <div class="portrait-stat-num">360<span>°</span></div>
+                <div class="portrait-stat-label">Accomp.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SERVICES ─────────────────────────────────────────────── -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="services-header reveal">
+        <p class="section-label">Nos services</p>
+        <h2 class="services-headline">
+          Un accompagnement <em>complet</em>,<br>de la conception à l'exploitation
+        </h2>
+      </div>
+
+      <div class="services-grid reveal">
+
+        <!-- 01 -->
+        <div class="service-card">
+          <span class="service-num">01</span>
+          <span class="service-icon">🍴</span>
+          <h3 class="service-title">Création du Concept</h3>
+          <ul class="service-list">
+            <li>Choix de concept culinaire innovant</li>
+            <li>Conception des cartes de menu</li>
+            <li>Établissement des prix de la carte</li>
+            <li>Aménagement des salles &amp; bars</li>
+            <li>Aménagement fonctionnel des cuisines</li>
+            <li>Respect des normes HACCP</li>
+            <li>Définition du concept &amp; étude de faisabilité</li>
+            <li>Établissement du business plan</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tag">Menu Engineering</span>
+            <span class="tag">HACCP</span>
+            <span class="tag">Business Plan</span>
+          </div>
+        </div>
+
+        <!-- 02 -->
+        <div class="service-card">
+          <span class="service-num">02</span>
+          <span class="service-icon">⚙️</span>
+          <h3 class="service-title">Management Opérationnel</h3>
+          <ul class="service-list">
+            <li>Établissement des budgets prévisionnels</li>
+            <li>Comptes d'exploitation &amp; tableaux de bord</li>
+            <li>Analyse des résultats</li>
+            <li>Besoins en ressources humaines</li>
+            <li>Recrutement &amp; gestion des carrières</li>
+            <li>Référencement des fournisseurs</li>
+            <li>Analyse des indicateurs de performance</li>
+            <li>Optimisation des revenus</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tag">Gestion financière</span>
+            <span class="tag">RH</span>
+            <span class="tag">KPI</span>
+          </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="service-card">
+          <span class="service-num">03</span>
+          <span class="service-icon">📣</span>
+          <h3 class="service-title">Marketing &amp; Communication</h3>
+          <ul class="service-list">
+            <li>Stratégie marketing</li>
+            <li>Identité visuelle</li>
+            <li>Hébergement de site Web</li>
+            <li>Gestion des réseaux sociaux</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tag">Stratégie digitale</span>
+            <span class="tag">Réseaux sociaux</span>
+            <span class="tag">Branding</span>
+          </div>
+        </div>
+
+        <!-- 04 -->
+        <div class="service-card">
+          <span class="service-num">04</span>
+          <span class="service-icon">🎓</span>
+          <h3 class="service-title">Formation</h3>
+          <ul class="service-list">
+            <li>Techniques de vente en restauration</li>
+            <li>Calcul des coûts &amp; tarification de la carte</li>
+            <li>Le compte d'exploitation</li>
+            <li>Coaching du personnel en salle</li>
+            <li>Savoir-être &amp; savoir-faire</li>
+            <li>L'accueil en hôtellerie</li>
+            <li>Art de la table</li>
+            <li>Sécurité alimentaire / HACCP</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tag">Salle</span>
+            <span class="tag">Gestion</span>
+            <span class="tag">HACCP</span>
+          </div>
+        </div>
+
+        <!-- 05 -->
+        <div class="service-card">
+          <span class="service-num">05</span>
+          <span class="service-icon">🔍</span>
+          <h3 class="service-title">Audit</h3>
+          <ul class="service-list">
+            <li>Audit F&amp;B : achats, consommation matières, recettes &amp; dépenses</li>
+            <li>Analyse des comptes d'exploitation</li>
+            <li>Enquête de satisfaction client &amp; client mystère</li>
+            <li>Certifications : ISO 9001, ISO 9014, Charte Clef Verte</li>
+            <li>Sécurité alimentaire &amp; normes HACCP</li>
+            <li>Sécurité &amp; maintenance préventive des installations</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tag">Audit F&amp;B</span>
+            <span class="tag">ISO 9001</span>
+            <span class="tag">Client mystère</span>
+          </div>
+        </div>
+
+        <!-- 06 -->
+        <div class="service-card">
+          <span class="service-num">06</span>
+          <span class="service-icon">🎉</span>
+          <h3 class="service-title">Organisation d'Événements</h3>
+          <ul class="service-list">
+            <li>Soirées à thème, conférences &amp; séminaires</li>
+            <li>Définition des objectifs</li>
+            <li>Choix de la date et du lieu</li>
+            <li>Coordination des intervenants</li>
+            <li>Établissement du budget</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tag">Séminaires</span>
+            <span class="tag">Soirées à thème</span>
+            <span class="tag">Conférences</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MÉTHODE ───────────────────────────────────────────────── -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="process-header reveal">
+        <p class="section-label">Notre approche</p>
+        <h2 class="process-headline">Un parcours structuré,<br>du diagnostic à la performance</h2>
+      </div>
+
+      <div class="process-steps reveal">
+        <div class="process-step">
+          <div class="step-dot"></div>
+          <p class="step-phase">Étape 1</p>
+          <h3 class="step-title">Diagnostic</h3>
+          <p class="step-desc">Audit complet de votre établissement : finances, opérations, équipe, carte et expérience client. Un regard externe et objectif sans a priori.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-dot"></div>
+          <p class="step-phase">Étape 2</p>
+          <h3 class="step-title">Stratégie</h3>
+          <p class="step-desc">Élaboration d'un plan d'action sur mesure, priorisé et chiffré — adapté à vos objectifs, votre budget et la réalité de votre marché.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-dot"></div>
+          <p class="step-phase">Étape 3</p>
+          <h3 class="step-title">Mise en œuvre</h3>
+          <p class="step-desc">Déploiement opérationnel à vos côtés : formation des équipes, refonte des processus, lancement des nouveaux outils et de la communication.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-dot"></div>
+          <p class="step-phase">Étape 4</p>
+          <h3 class="step-title">Suivi &amp; Optimisation</h3>
+          <p class="step-desc">Mesure des indicateurs clés, ajustements continus et accompagnement dans la durée pour garantir des résultats pérennes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CHIFFRES CLÉS ─────────────────────────────────────────── -->
+  <section class="results" id="results">
+    <div class="container">
+      <div class="results-inner reveal">
+        <div class="results-quote">
+          « Professionnalisme, rigueur et innovation sont les trois piliers qui guident chaque mission. Nous ne livrons pas des rapports — nous transformons des établissements. »
+          <cite>— Mouhssine Cherti, Fondateur, F&amp;B Consulting</cite>
+        </div>
+        <div class="results-numbers">
+          <div class="result-item">
+            <div class="result-num">30<span style="font-size:2rem">+</span></div>
+            <div class="result-label">Ans d'expérience terrain</div>
+          </div>
+          <div class="result-item">
+            <div class="result-num">6</div>
+            <div class="result-label">Domaines d'expertise</div>
+          </div>
+          <div class="result-item">
+            <div class="result-num">EHL</div>
+            <div class="result-label">École Hôtelière de Lausanne</div>
+          </div>
+          <div class="result-item">
+            <div class="result-num">360<span style="font-size:2rem">°</span></div>
+            <div class="result-label">Accompagnement complet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RÉALISATIONS ──────────────────────────────────────────── -->
+  <section class="cases" id="realisations">
+    <div class="container">
+      <div class="cases-header reveal">
+        <div>
+          <p class="section-label">Réalisations</p>
+          <h2 class="cases-headline">Missions menées avec succès</h2>
+        </div>
+        <a href="#contact" class="btn-primary" style="flex-shrink:0;">Nous contacter</a>
+      </div>
+
+      <div class="cases-grid reveal">
+
+        <div class="case-card">
+          <div class="case-img">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <rect fill="#2A1F15" width="400" height="180"/>
+              <text x="200" y="80" text-anchor="middle" fill="rgba(201,168,76,0.35)" font-size="48">🏨</text>
+              <text x="200" y="130" text-anchor="middle" fill="rgba(247,243,236,0.15)" font-family="Georgia" font-size="13" font-style="italic">Ouverture hôtelière</text>
+            </svg>
+          </div>
+          <div class="case-body">
+            <p class="case-cat">Création de concept &amp; ouverture</p>
+            <h3 class="case-title">Lancement d'un établissement hôtelier 4 étoiles</h3>
+            <p class="case-desc">Accompagnement complet : définition du concept F&B, recrutement &amp; formation des équipes, mise en place des standards de qualité et des procédures HACCP.</p>
+            <div class="case-result">
+              Ouverture réussie
+              <small>dans les délais et le budget</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-img">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <rect fill="#1A2620" width="400" height="180"/>
+              <text x="200" y="80" text-anchor="middle" fill="rgba(138,158,138,0.4)" font-size="48">📋</text>
+              <text x="200" y="130" text-anchor="middle" fill="rgba(247,243,236,0.15)" font-family="Georgia" font-size="13" font-style="italic">Audit &amp; optimisation</text>
+            </svg>
+          </div>
+          <div class="case-body">
+            <p class="case-cat">Audit F&amp;B &amp; restructuration</p>
+            <h3 class="case-title">Optimisation du coût matière d'un restaurant gastronomique</h3>
+            <p class="case-desc">Audit complet des achats, recettes &amp; dépenses, renegociation des contrats fournisseurs et refonte de la carte pour améliorer la rentabilité sans dégrader la qualité.</p>
+            <div class="case-result">
+              Coût matière optimisé
+              <small>résultats visibles sous 3 mois</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-img">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <rect fill="#221A2A" width="400" height="180"/>
+              <text x="200" y="80" text-anchor="middle" fill="rgba(180,140,200,0.35)" font-size="48">🎓</text>
+              <text x="200" y="130" text-anchor="middle" fill="rgba(247,243,236,0.15)" font-family="Georgia" font-size="13" font-style="italic">Formation équipes</text>
+            </svg>
+          </div>
+          <div class="case-body">
+            <p class="case-cat">Formation &amp; management</p>
+            <h3 class="case-title">Programme de formation pour une chaîne de restauration</h3>
+            <p class="case-desc">Conception et déploiement d'un programme complet : techniques de vente, art de la table, savoir-être &amp; normes HACCP pour une équipe de 40 collaborateurs.</p>
+            <div class="case-result">
+              40 collaborateurs formés
+              <small>satisfaction client en hausse</small>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ───────────────────────────────────────────────── -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="contact-inner reveal">
+
+        <div class="contact-left">
+          <p class="section-label">Contact</p>
+          <h2 class="contact-headline">Parlons de votre<br>projet ensemble</h2>
+          <p class="contact-body">
+            Vous souhaitez ouvrir un établissement, améliorer vos performances ou former vos équipes ? Contactez-nous pour un premier échange sans engagement.
+          </p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <span class="contact-icon">👤</span>
+              <div>
+                <div class="contact-info-label">Consultant</div>
+                <div class="contact-info-val">Mouhssine Cherti</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📱</span>
+              <div>
+                <div class="contact-info-label">Téléphone / GSM</div>
+                <div class="contact-info-val"><a href="tel:0694060070">06 94 06 00 70</a></div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">✉️</span>
+              <div>
+                <div class="contact-info-label">E-mail</div>
+                <div class="contact-info-val"><a href="mailto:m.cherti@gmail.com">m.cherti@gmail.com</a></div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">🌐</span>
+              <div>
+                <div class="contact-info-label">Site web</div>
+                <div class="contact-info-val"><a href="https://www.fbbs-consulting.com" target="_blank">www.fbbs-consulting.com</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <h3 class="form-heading">Envoyez un message</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Prénom</label>
+              <input type="text" id="fname" placeholder="Votre prénom">
+            </div>
+            <div class="form-group">
+              <label for="lname">Nom</label>
+              <input type="text" id="lname" placeholder="Votre nom">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <input type="email" id="email" placeholder="vous@etablissement.com">
+          </div>
+          <div class="form-group">
+            <label for="tel">Téléphone</label>
+            <input type="tel" id="tel" placeholder="Votre numéro">
+          </div>
+          <div class="form-group">
+            <label for="venue">Nom de votre établissement</label>
+            <input type="text" id="venue" placeholder="Hôtel, restaurant, groupe…">
+          </div>
+          <div class="form-group">
+            <label for="service">Service souhaité</label>
+            <select id="service">
+              <option value="">Sélectionnez un service…</option>
+              <option>Création de concept</option>
+              <option>Management opérationnel</option>
+              <option>Marketing &amp; Communication</option>
+              <option>Formation</option>
+              <option>Audit F&amp;B</option>
+              <option>Organisation d'événements</option>
+              <option>Demande générale</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Décrivez votre projet</label>
+            <textarea id="message" placeholder="Décrivez brièvement votre établissement, votre situation et ce que vous cherchez à accomplir…"></textarea>
+          </div>
+          <button class="btn-primary" style="width:100%;text-align:center;" onclick="handleSubmit(event)">
+            Envoyer le message →
+          </button>
+          <p style="font-size:var(--text-xs);color:var(--color-mid);margin-top:var(--sp-sm);text-align:center;">
+            Vos informations sont traitées en toute confidentialité.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+
+        <div class="footer-brand">
+          <a class="nav-logo" href="#">F<span>&amp;B</span> Consulting</a>
+          <p class="footer-tagline">Conseil en hôtellerie &amp; restauration — Professionnalisme, Rigueur, Innovation.</p>
+          <div class="footer-social">
+            <a class="social-link" href="#" aria-label="LinkedIn">in</a>
+            <a class="social-link" href="#" aria-label="Instagram">◎</a>
+            <a class="social-link" href="#" aria-label="Facebook">f</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Services</p>
+          <ul class="footer-links">
+            <li><a href="#services">Création de concept</a></li>
+            <li><a href="#services">Management opérationnel</a></li>
+            <li><a href="#services">Marketing &amp; Com.</a></li>
+            <li><a href="#services">Formation</a></li>
+            <li><a href="#services">Audit F&amp;B</a></li>
+            <li><a href="#services">Événements</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Navigation</p>
+          <ul class="footer-links">
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#realisations">Réalisations</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Secteurs</p>
+          <ul class="footer-links">
+            <li><a href="#">Hôtellerie</a></li>
+            <li><a href="#">Restauration gastronomique</a></li>
+            <li><a href="#">Brasserie &amp; Bistrot</a></li>
+            <li><a href="#">Restauration rapide</a></li>
+            <li><a href="#">Traiteur &amp; Événementiel</a></li>
+            <li><a href="#">Bars &amp; Caves</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2025 F&amp;B Consulting — Mouhssine Cherti. Tous droits réservés.</p>
+        <div class="footer-legal">
+          <a href="#">Mentions légales</a>
+          <a href="#">Politique de confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation au défilement
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Menu mobile
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    // Animation au défilement
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+
+    // Envoi du formulaire
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target;
+      const fname = document.getElementById('fname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!fname || !email) {
+        btn.textContent = 'Veuillez remplir les champs obligatoires';
+        btn.style.background = 'var(--color-clay)';
+        setTimeout(() => { btn.textContent = 'Envoyer le message →'; btn.style.background = ''; }, 2500);
+        return;
+      }
+      btn.textContent = 'Envoi en cours…';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '✓ Message envoyé — Nous vous répondrons très bientôt';
+        btn.style.background = 'var(--color-sage)';
+        btn.style.color = 'white';
+      }, 1000);
+    }
+
+    // Défilement fluide
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+  </script>
+</body>
+</html>
